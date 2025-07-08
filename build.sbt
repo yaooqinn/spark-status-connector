@@ -17,7 +17,7 @@ lazy val root = (project in file("."))
 
   )
 
-lazy val sparkVersion = "4.1.0-SNAPSHOT"
+lazy val sparkVersion = sys.props.getOrElse("spark.version", "4.0.0")
 
 libraryDependencies += "org.apache.spark" %% "spark-sql" % sparkVersion % Provided
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.19" % Test

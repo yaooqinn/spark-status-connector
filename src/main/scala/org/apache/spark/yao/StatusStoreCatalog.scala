@@ -5,7 +5,8 @@ package org.apache.spark.yao
 import org.apache.spark.sql.connector.catalog.{Identifier, Table, TableCatalog, TableChange}
 import org.apache.spark.sql.util.CaseInsensitiveStringMap
 import org.apache.spark.sql.SparkSession
-import org.apache.spark.sql.types.UDTRegistration
+import org.apache.spark.sql.connector.expressions.Transform
+import org.apache.spark.sql.types.{StructType, UDTRegistration}
 import org.apache.spark.yao.StatusStoreCatalog.registerUDTs
 import org.apache.spark.yao.encoder.udt.{ExecutorMetricsUDT, JavaUtilDateUDT, ResourceInformationUDT}
 
@@ -37,6 +38,14 @@ class StatusStoreCatalog extends TableCatalog {
   override def loadTable(ident: Identifier): Table = {
     StatusTable.tableExists(ident.name(), throwable = true)
     StatusTable(spark, ident.name())
+  }
+
+  override def createTable(
+      ident: Identifier,
+      schema: StructType,
+      partitioning: Array[Transform],
+      properties: java.util.Map[String, String]): Table = {
+    throw new UnsupportedOperationException("createTable is not supported in StatusStoreCatalog")
   }
 
   override def alterTable(ident: Identifier, changes: TableChange*): Table = {
