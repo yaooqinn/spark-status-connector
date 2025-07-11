@@ -1,6 +1,4 @@
-
 package org.apache.spark.yao
-
 
 import org.apache.spark.sql.connector.catalog.{Identifier, Table, TableCatalog, TableChange}
 import org.apache.spark.sql.util.CaseInsensitiveStringMap

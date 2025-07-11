@@ -6,7 +6,11 @@ import org.apache.spark.sql.types.{DataType, TimestampType, UserDefinedType}
 
 class JavaUtilDateUDT extends UserDefinedType[Date] {
   override def serialize(date: Date): Long = {
-    if (date == null) Long.MinValue else date.getTime
+    if (date == null) {
+      Long.MinValue
+    } else {
+      Math.multiplyExact(date.getTime, 1000L)
+    }
   }
   override def deserialize(datum: Any): Date = {
     datum match {
@@ -26,6 +30,8 @@ class JavaUtilDateUDT extends UserDefinedType[Date] {
       case _ => null
     }
   }
+
+  override def pyUDT: String = "pyspark.sql.types.TimestampType"
 }
 
 object JavaUtilDateUDT extends JavaUtilDateUDT
