@@ -14,15 +14,27 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
         matrix:
-          java-version:
-            - '21'
-            - '17'
+          settings:
+            - spark:
+              - '3.5.6'
+              - '3.4.2'
+              scala:
+              - '2.13.16'
+              - '2.12.20'
+              java: '8'
+            - spark:
+                - '4.0.0'
+#                - '4.1.0-preview1'
+              scala: '2.13.16'
+              java:
+               - '17'
+               - '21'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
-          java-version: ${{ matrix.java-version }}
+          java-version: ${{ matrix.settings.java }}
           cache: 'sbt'
           cache-dependency-path: | # optional
             build.sbt
@@ -38,5 +50,5 @@ jobs:
           sudo apt-get update
           sudo apt-get install sbt
       - name: Build with SBT
-        run: sbt clean test package
+        run: sbt clean test package -Dscala.version=${{ matrix.settings.scala }} -Dspark.version=${{ matrix.settings.spark }}
 

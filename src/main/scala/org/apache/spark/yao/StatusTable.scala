@@ -1,6 +1,5 @@
 package org.apache.spark.yao
 
-import java.util
 import java.util.Locale
 
 import org.apache.spark.sql.connector.catalog.{SupportsRead, Table, TableCapability}
@@ -19,7 +18,7 @@ case class StatusTable(
 
   override def schema(): StructType = tableSchema(name)
 
-  override def capabilities(): util.Set[TableCapability] = util.EnumSet.of(TableCapability.BATCH_READ)
+  override def capabilities(): java.util.Set[TableCapability] = java.util.EnumSet.of(TableCapability.BATCH_READ)
 
   override def newScanBuilder(options: CaseInsensitiveStringMap): ScanBuilder = {
     StatusScanBuilder(spark.sparkContext.statusStore, name.toLowerCase(Locale.ROOT))

@@ -1,9 +1,10 @@
 ThisBuild / name := "Spark Status Store Connector"
 ThisBuild / organization := "com.github.yaooqinn"
-ThisBuild / scalaVersion := "2.13.16"
+ThisBuild / scalaVersion := sys.props.getOrElse("scala.version","2.13.16")
 ThisBuild / version := "0.1.0-SNAPSHOT"
 ThisBuild / description := "A Spark DSv2 connector for querying its runtime status"
 ThisBuild / licenses := Seq("Apache-2.0" -> url("https://www.apache.org/licenses/LICENSE-2.0.txt"))
+lazy val sparkVersion = sys.props.getOrElse("spark.version", "4.0.0")
 
 lazy val root = (project in file("."))
   .settings(
@@ -16,8 +17,6 @@ lazy val root = (project in file("."))
     resolvers += "Apache Staging" at "https://repository.apache.org/content/repositories/staging/",
 
   )
-
-lazy val sparkVersion = sys.props.getOrElse("spark.version", "4.0.0")
 
 libraryDependencies += "org.apache.spark" %% "spark-sql" % sparkVersion % Provided
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.19" % Test
